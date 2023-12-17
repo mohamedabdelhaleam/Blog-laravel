@@ -17,11 +17,4 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-############################# Start Posts ##############################
-Route::group(['prefix' => 'posts'], function () {
-    Route::get('', [PostsController::class, 'getAllPosts']);
-    Route::post('create', [PostsController::class, 'createPost']);
-    Route::post('update/{postId}', [PostsController::class, 'updatePost']);
-    Route::get('delete/{postId}', [PostsController::class, 'deletePost']);
-});
-############################# End Posts ##############################
+
