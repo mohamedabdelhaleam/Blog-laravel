@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PostsController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -28,3 +29,13 @@ Route::group(['prefix' => 'posts'], function () {
     Route::delete('delete/{postId}', [PostsController::class, 'deletePost']);
 });
 ############################# End Posts ##############################
+
+############################# Start User ##############################
+Route::group(['prefix' => 'users'], function () {
+    Route::get('', [UserController::class, 'getAllUsers']);
+    Route::get('{userId}', [UserController::class, 'getUserPosts']);
+    Route::post('create', [UserController::class, 'createPost']);
+    Route::patch('update/{userId}', [UserController::class, 'updatePost']);
+    Route::delete('delete/{userId}', [UserController::class, 'deletePost']);
+});
+############################# End User ##############################
