@@ -13,7 +13,27 @@ class PostsController extends Controller
         $posts = Post::with(['users' => function ($q) {
             $q->select('id', 'name', 'email');
         }])->get();
-        return response()->json($posts);
+        return response()->json([
+            'status' => 'success',
+            "data" => ['post' => $posts]
+        ]);
+    }
+    public function getSinglePost($postId)
+    {
+        $post = Post::with(['users' => function ($q) {
+            $q->select('id', 'name', 'email');
+        }])->find($postId);
+        if (!$post) {
+            return response()->json([
+                'status' => 'fail',
+                'message' => 'can not find post',
+                "data" => ['post' => $post]
+            ]);
+        }
+        return response()->json([
+            'status' => 'success',
+            "data" => ['post' => $post]
+        ]);
     }
     public function createPost(PostsRequest $request)
     {
@@ -23,17 +43,42 @@ class PostsController extends Controller
             'user_id' => $request->user_id,
             'category_id' => $request->category_id
         ]);
-
-        return response()->json($post);
+        return response()->json([
+            'status' => 'success',
+            "data" => ['post' => $post]
+        ]);
     }
-    public function updatePost($postId)
+    public function updatePost(PostsRequest $request, $postId)
     {
-        $posts = Post::get();
-        return response()->json($posts);
+        $post = Post::find($postId);
+        if (!$post) {
+            return response()->json([
+                'status' => 'fail',
+                'message' => 'can not find post',
+                "data" => ['post' => $post]
+            ]);
+        }
+        $post->update($request->all());
+        $post->makeVisible('updated_at');
+        return response()->json([
+            'status' => 'success',
+            "data" => ['post' => $post]
+        ]);
     }
     public function deletePost($postId)
     {
-        $posts = Post::get();
-        return response()->json($posts);
+        $post = Post::find($postId);
+        if (!$post) {
+            return response()->json([
+                'status' => 'fail',
+                'message' => 'can not find post',
+                "data" => ['post' => $post]
+            ]);
+        }
+        $post->delete();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Deleted Successfully'
+        ]);
     }
 }
