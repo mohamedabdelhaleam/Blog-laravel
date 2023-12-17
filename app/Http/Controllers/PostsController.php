@@ -46,7 +46,7 @@ class PostsController extends Controller
         return response()->json([
             'status' => 'success',
             "data" => ['post' => $post]
-        ]);
+        ],201);
     }
     public function updatePost(PostsRequest $request, $postId)
     {
@@ -56,7 +56,7 @@ class PostsController extends Controller
                 'status' => 'fail',
                 'message' => 'can not find post',
                 "data" => ['post' => $post]
-            ]);
+            ],404);
         }
         $post->update($request->all());
         $post->makeVisible('updated_at');
@@ -73,7 +73,7 @@ class PostsController extends Controller
                 'status' => 'fail',
                 'message' => 'can not find post',
                 "data" => ['post' => $post]
-            ]);
+            ],404);
         }
         $post->delete();
         return response()->json([
